@@ -37,8 +37,16 @@ public class BasketBallScript : MonoBehaviour
 
     private TweenManager tweenManager;
 
+    public Camera uiCamera;        // Assign your UI Camera in the Inspector
+    public Camera gameCamera;      // Assign your Game Camera in the Inspector
+
+
+
     private void Start()
     {
+        // UI camera renders on start
+        ShowMainMenu();
+
         // Initialize object pool
         for (int i = 0; i < poolSize; i++)
         {
@@ -57,6 +65,26 @@ public class BasketBallScript : MonoBehaviour
         tweenManager = GameObject.Find("Tween Manager").GetComponent<TweenManager>();
 
         UpdateScoreUI();
+    }
+
+    // Activate UI Camera and disable Game Camera
+    public void ShowMainMenu()
+    {
+        uiCamera.enabled = true;
+        gameCamera.enabled = false;
+
+        // Pause the game when showing UI
+        Time.timeScale = 0f;
+    }
+
+    // Activate Game Camera and disable UI Camera
+    public void StartGameplay()
+    {
+        gameCamera.enabled = true;
+        uiCamera.enabled = false;
+
+        // Resume the game when gameplay starts
+        Time.timeScale = 1f;
     }
 
     private void Update()

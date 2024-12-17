@@ -35,43 +35,43 @@ public class TweenManager : MonoBehaviour
 
     public void slidedifficultyUI()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         difficultyUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
     }
 
      public void menuinDiffOut()
     {
-        difficultyUI.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        difficultyUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
     }
 
     public void menuOutRecordIn()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         recordUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
     }
 
      public void menuInRecordOut()
     {
-        recordUI.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        recordUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
     }
 
     public void menuOutRulesIn()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         RulesUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
     }
 
      public void menuInRulesOut()
     {
-        RulesUI.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        RulesUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
     }
 
      public void GamePlayInDifficultyOut()
     {
-        difficultyUI.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        difficultyUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         gamePlayUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
         background.SetActive(false);
           
@@ -81,7 +81,7 @@ public class TweenManager : MonoBehaviour
     {
         basketballScript.canPlay = false;
         background.SetActive(true);
-        gamePlayUI.DOAnchorPos(new Vector2(0, 1757), 0.25f);
+        gamePlayUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
         mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
         basketballScript.timeSlider.gameObject.SetActive(true);  // Reset slider active state 
         basketballScript.isTraining = false;    
