@@ -86,6 +86,7 @@ public class TweenManager : MonoBehaviour
         basketballScript.timeSlider.gameObject.SetActive(true);  // Reset slider active state 
         basketballScript.isTraining = false;    
         DestroyAllPopups();
+      // basketballScript.ShowMainMenu();
     }
 
     private void DestroyAllPopups()

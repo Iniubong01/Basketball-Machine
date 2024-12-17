@@ -39,13 +39,14 @@ public class BasketBallScript : MonoBehaviour
 
     public Camera uiCamera;        // Assign your UI Camera in the Inspector
     public Camera gameCamera;      // Assign your Game Camera in the Inspector
+    public GameObject gameplayPanel;     // Gameplay UI Panel
 
 
 
     private void Start()
     {
         // UI camera renders on start
-        ShowMainMenu();
+       // ShowMainMenu();
 
         // Initialize object pool
         for (int i = 0; i < poolSize; i++)
@@ -68,25 +69,7 @@ public class BasketBallScript : MonoBehaviour
     }
 
     // Activate UI Camera and disable Game Camera
-    public void ShowMainMenu()
-    {
-        uiCamera.enabled = true;
-        gameCamera.enabled = false;
-
-        // Pause the game when showing UI
-        Time.timeScale = 0f;
-    }
-
-    // Activate Game Camera and disable UI Camera
-    public void StartGameplay()
-    {
-        gameCamera.enabled = true;
-        uiCamera.enabled = false;
-
-        // Resume the game when gameplay starts
-        Time.timeScale = 1f;
-    }
-
+    
     private void Update()
     {
         HandleSwipeInput();
@@ -269,6 +252,7 @@ public class BasketBallScript : MonoBehaviour
     {
         SaveHighScore();
         tweenManager.GamePlayOutMenuIn();
+       // ShowMainMenu();
     }
 
 
@@ -277,6 +261,7 @@ public class BasketBallScript : MonoBehaviour
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Easy");
         ResetCurrentScore();
+       // StartGameplay();
     }
 
     public void OnMediumButtonPressed()
@@ -284,6 +269,7 @@ public class BasketBallScript : MonoBehaviour
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Medium");
         ResetCurrentScore();
+       // StartGameplay();
     }
 
     public void OnHardButtonPressed()
@@ -291,6 +277,7 @@ public class BasketBallScript : MonoBehaviour
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Hard");
         ResetCurrentScore();
+      //  StartGameplay();
     }
 
         public void OnTrainingButtonPressed()
@@ -298,6 +285,7 @@ public class BasketBallScript : MonoBehaviour
         isTraining = true;  // Enable Training Mode
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         ResetCurrentScore();
+       /// StartGameplay();
 
         if(isTraining == true) {
             {
