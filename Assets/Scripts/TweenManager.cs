@@ -1,5 +1,4 @@
- using System.Collections;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -11,106 +10,133 @@ public class TweenManager : MonoBehaviour
     public GameObject background;
 
     private BasketBallScript basketballScript;
+    private bool isAnimating = false; // Prevents multiple coroutine calls
 
-    // Update is called once per frame
-     void Start()
+    // Panel positions for transitions
+    private readonly Vector2 onScreenPos = new Vector2(0, 0);
+    private readonly Vector2 offScreenPos = new Vector2(0, 2220);
+
+    // Start is called before the first frame update
+    void Start()
     {
-        transform.LeanMoveLocal(new Vector2 (0, 410), 1).setEaseInOutQuart().setLoopPingPong();
+        // Animate the UI object with a ping-pong effect
+        transform.DOLocalMove(new Vector2(0, 410), 1)
+            .SetEase(Ease.InOutQuart)
+            .SetLoops(-1, LoopType.Yoyo);
+
+        // Animate buttons if needed
         StartCoroutine(AnimateButtons());
+
+        // Find Basketball Manager script
         basketballScript = GameObject.Find("Basketball Manager").GetComponent<BasketBallScript>();
-    
     }
 
+    // Coroutine to animate buttons with a delay
     public IEnumerator AnimateButtons()
-    { 
+    {
+        if (isAnimating) yield break; // Prevent multiple coroutine calls
+        isAnimating = true;
+
+        // Example button animation logic (replace with actual buttons if needed)
         yield return new WaitForSeconds(0.05f);
-        mainMenu.DOAnchorPos(new Vector2(0, 200), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.45f);
+
+        isAnimating = false;
     }
 
-    public void slideMainMenu()
+    // Slide difficulty UI in and out
+    public void SlideDifficultyUI()
     {
-        mainMenu.DOAnchorPos(Vector2.zero, 0.25f);
+        mainMenu.DOAnchorPos(offScreenPos, 0.25f);
+        difficultyUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-    public void slidedifficultyUI()
+    // Slide out difficulty UI and bring back main menu
+    public void MenuInDiffOut()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        difficultyUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
+        difficultyUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-     public void menuinDiffOut()
+    // Slide out main menu and bring in record UI
+    public void MenuOutRecordIn()
     {
-        difficultyUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
+        mainMenu.DOAnchorPos(offScreenPos, 0.25f);
+        recordUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-    public void menuOutRecordIn()
+    // Slide out record UI and bring back main menu
+    public void MenuInRecordOut()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        recordUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
+        recordUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-     public void menuInRecordOut()
+    // Slide out main menu and bring in rules UI
+    public void MenuOutRulesIn()
     {
-        recordUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
+        mainMenu.DOAnchorPos(offScreenPos, 0.25f);
+        RulesUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-    public void menuOutRulesIn()
+    // Slide out rules UI and bring back main menu
+    public void MenuInRulesOut()
     {
-        mainMenu.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        RulesUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
+        RulesUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
     }
 
-     public void menuInRulesOut()
+    // Transition to gameplay UI and hide difficulty UI
+    public void GamePlayInDifficultyOut()
     {
-        RulesUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);        
+        difficultyUI.DOAnchorPos(offScreenPos, 0.25f);
+        gamePlayUI.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+        ToggleBackground(false); // Hide background during gameplay
     }
 
-     public void GamePlayInDifficultyOut()
-    {
-        difficultyUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        gamePlayUI.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
-        background.SetActive(false);
-          
-    }
-
-     public void GamePlayOutMenuIn()
+    // Transition from gameplay UI back to main menu
+    public void GamePlayOutMenuIn()
     {
         basketballScript.canPlay = false;
-        background.SetActive(true);
-        gamePlayUI.DOAnchorPos(new Vector2(0, 2220), 0.25f);
-        mainMenu.DOAnchorPos(new Vector2(0, 0), 0.25f).SetDelay(0.25f);
-        basketballScript.timeSlider.gameObject.SetActive(true);  // Reset slider active state 
-        basketballScript.isTraining = false;    
-        DestroyAllPopups();
-      // basketballScript.ShowMainMenu();
+        ToggleBackground(true);
+
+        gamePlayUI.DOAnchorPos(offScreenPos, 0.25f);
+        mainMenu.DOAnchorPos(onScreenPos, 0.25f).SetDelay(0.25f);
+
+        basketballScript.timeSlider.gameObject.SetActive(false);
+        basketballScript.isTraining = false;
+
+        DestroyAllPopups(); // Clean up any lingering popups
+
+        Debug.Log("Returned to Main Menu.");
     }
 
+    // Slide in settings UI
+    public void SlideSettingsUI()
+    {
+        settingsUI.DOScale(Vector2.one, 0.25f).SetEase(Ease.OutBack);
+    }
+
+    // Slide out settings UI
+    public void UndoSettingsUI()
+    {
+        settingsUI.DOScale(Vector2.zero, 0.25f).SetEase(Ease.InBack);
+    }
+
+    // Toggle background visibility
+    private void ToggleBackground(bool isActive)
+    {
+        background.SetActive(isActive);
+    }
+
+    // Destroy all active popups
     private void DestroyAllPopups()
     {
         // Find all GameObjects with the ScorePopupAnim component
         ScorePopupAnim[] activePopups = FindObjectsOfType<ScorePopupAnim>();
-        
+
         foreach (ScorePopupAnim popup in activePopups)
         {
             Destroy(popup.gameObject);
         }
     }
-
-
-
-     public void slideSettingsUI()
-    {
-        settingsUI.DOScale(Vector2.one, 0.25f).SetEase(Ease.OutBack);
-    }
-
-    public void undoSettingsUI()
-    {
-        settingsUI.DOScale(Vector2.zero, 0.25f).SetEase(Ease.InBack);;
-    }
 }
-
-

@@ -9,7 +9,6 @@ public class BasketBallScript : MonoBehaviour
     public GameObject basketballPrefab, pauseUI;
     public float shootingForceMultiplier = 0.1f;
     public float upwardForce = 5f;
-    public LineRenderer trajectoryLine;
     public int trajectoryPoints = 20;
     public Slider timeSlider;
     public Text timeText;
@@ -19,20 +18,22 @@ public class BasketBallScript : MonoBehaviour
     private Vector2 startSwipePosition, endSwipePosition;
     private bool isSwiping = false;
     [HideInInspector] public bool canPlay = false, isTraining = false;
+    [HideInInspector] public bool isGameOver = false; // Ensure this is declared outside the method    
+
+    // Pause funtionality
+    private bool isPaused = false; // Flag to check if Game Over has already been handled
     
     private float gameTime, remainingTime;
     private string currentDifficulty;
 
     private Queue<Rigidbody> basketballPool = new Queue<Rigidbody>();
-    private int poolSize = 20;
+    private int poolSize = 26;
 
     private int easyHighScore, mediumHighScore, hardHighScore;
-    private int currentScore = 0;
+    private int currentScore;
 
     private int currentEasyScore = 0, currentMediumScore = 0, currentHardScore = 0;
 
-    // Pause funtionality
-    private bool isPaused = false;
     private float previousTimeScale = 1f;
 
     private TweenManager tweenManager;
@@ -41,13 +42,9 @@ public class BasketBallScript : MonoBehaviour
     public Camera gameCamera;      // Assign your Game Camera in the Inspector
     public GameObject gameplayPanel;     // Gameplay UI Panel
 
-
-
     private void Start()
     {
-        // UI camera renders on start
-       // ShowMainMenu();
-
+      
         // Initialize object pool
         for (int i = 0; i < poolSize; i++)
         {
@@ -57,6 +54,7 @@ public class BasketBallScript : MonoBehaviour
         }
 
         SetDifficulty("Easy");
+
 
         // Load high scores
         easyHighScore = PlayerPrefs.GetInt("EasyHighScore", 0);
@@ -68,7 +66,6 @@ public class BasketBallScript : MonoBehaviour
         UpdateScoreUI();
     }
 
-    // Activate UI Camera and disable Game Camera
     
     private void Update()
     {
@@ -76,7 +73,7 @@ public class BasketBallScript : MonoBehaviour
         UpdateTimer();
     }
 
-            public void SetDifficulty(string difficulty)
+    public void SetDifficulty(string difficulty)
     {
         if (isTraining)
             return;
@@ -98,7 +95,7 @@ public class BasketBallScript : MonoBehaviour
     }
 
 
-        private void HandleSwipeInput()
+    private void HandleSwipeInput()
     {
         if (!canPlay)
             return;
@@ -205,6 +202,7 @@ public class BasketBallScript : MonoBehaviour
                 currentHardScore += points;
                 break;
         }
+
         UpdateScoreUI();
     }
 
@@ -230,12 +228,13 @@ public class BasketBallScript : MonoBehaviour
         UpdateHighScoreUI();
     }
 
-        public void ResetCurrentScore()
+    public void ResetCurrentScore()
     {
         currentEasyScore = 0;
         currentMediumScore = 0;
         currentHardScore = 0;
         currentScore = 0;
+        isGameOver = false;
 
         UpdateScoreUI();
     }
@@ -248,12 +247,36 @@ public class BasketBallScript : MonoBehaviour
         hardHighScoreText.text = hardHighScore.ToString();
     }
 
-    private void GameOver()
+        private void GameOver()
     {
+        if (isGameOver) return;
+
+        isGameOver = true;
+        Debug.Log("GameOver triggered!");
+
+        // Save high score
         SaveHighScore();
-        tweenManager.GamePlayOutMenuIn();
-       // ShowMainMenu();
+
+        // Transition to the main menu only if not in training
+        if (isGameOver)
+        {
+            tweenManager.GamePlayOutMenuIn();
+        }
     }
+
+
+
+
+
+    private IEnumerator ResetGameOverState()
+    {
+        // Add a short delay to ensure GameOver actions complete
+        yield return new WaitForSeconds(1f);
+
+        // Reset the game over flag, if needed for replays
+        isGameOver = false;
+    }
+
 
 
         public void OnEasyButtonPressed()
@@ -280,7 +303,7 @@ public class BasketBallScript : MonoBehaviour
       //  StartGameplay();
     }
 
-        public void OnTrainingButtonPressed()
+    public void OnTrainingButtonPressed()
     {
         isTraining = true;  // Enable Training Mode
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
@@ -296,10 +319,9 @@ public class BasketBallScript : MonoBehaviour
         }
     }
 
-
     public void OnHighScoreButtonPressed() => SaveHighScore();
 
-            public void TogglePause()
+    public void TogglePause()
     {
         isPaused = !isPaused;
 

@@ -6,13 +6,24 @@ using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource sfxSource, musicSource;
-
     [SerializeField] private Toggle musicToggle, sfxToggle;    // Toggle for controlling SFX on/off
-
     [SerializeField] private AudioClip buttonSound;  // Sounds
 
+    public static AudioManager Instance { get; private set; } // Singleton for global access
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        // Set up the singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         // Initialize toggle values based on the audio source state
@@ -23,7 +34,8 @@ public class AudioManager : MonoBehaviour
         musicToggle.onValueChanged.AddListener(OnMusicToggle);
         sfxToggle.onValueChanged.AddListener(OnSFXToggle);
     }
-       // Called when the music toggle is changed
+
+    // Called when the music toggle is changed
     public void OnMusicToggle(bool isOn)
     {
         musicSource.mute = !isOn;  // If toggle is on, unmute; if off, mute
@@ -35,14 +47,16 @@ public class AudioManager : MonoBehaviour
         sfxSource.mute = !isOn;  // If toggle is on, unmute; if off, mute
     }
 
-    public void clickSound()
+    public bool IsSFXMuted()
     {
-        sfxSource.PlayOneShot(buttonSound);
+        return sfxSource.mute;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void clickSound()
     {
-        
+        if (!IsSFXMuted()) // Only play sound if SFX is not muted
+        {
+            sfxSource.PlayOneShot(buttonSound);
+        }
     }
 }

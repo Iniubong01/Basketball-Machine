@@ -22,7 +22,7 @@ public class ScorePopupAnim : MonoBehaviour
     private void Update()
     {
         // Upward motion during the fade-out
-        transform.Translate(Vector3.up * Time.deltaTime * 50f);
+        transform.Translate(Vector3.up * Time.deltaTime * 0.4f);
     }
 
     private IEnumerator FadeOutAndDestroy()

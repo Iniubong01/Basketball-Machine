@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2576263541067631027}
   - component: {fileID: 1613773925595369332}
   - component: {fileID: 286791854148342897}
+  - component: {fileID: -4710583626418892368}
   m_Layer: 0
   m_Name: Basketball
   m_TagString: Ball
@@ -33,7 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 124.06799, y: 7.8639984, z: 9.466003}
 --- !u!33 &4639503439918731533
 MeshFilter:
@@ -133,3 +134,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-4710583626418892368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6364205227602225152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b8afb73ec5c4b4382068d708cfde50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  bounceSound: {fileID: 8300000, guid: 919e880d0dccbd240a43a5b81d8f9b67, type: 3}
