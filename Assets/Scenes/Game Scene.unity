@@ -5622,6 +5622,10 @@ PrefabInstance:
       value: Score Effect
       objectReference: {fileID: 0}
     - target: {fileID: 5318118474938795682, guid: 69d8f05fda8421849a84b27b8c0d773d, type: 3}
+      propertyPath: lengthInSec
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5318118474938795682, guid: 69d8f05fda8421849a84b27b8c0d773d, type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
