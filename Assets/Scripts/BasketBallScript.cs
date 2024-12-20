@@ -2,51 +2,55 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using DG.Tweening;
 
 public class BasketBallScript : MonoBehaviour
 {
     [Space, SerializeField] EmissionColorEffect emissionColorEffect; // to control machine lights
 
-    public Transform ballSpawnPoint;
-    public GameObject basketballPrefab, pauseUI;
-    public float shootingForceMultiplier = 0.1f;
-    public float upwardForce = 5f;
-    public int trajectoryPoints = 20;
-    public Slider timeSlider;
-    public Text timeText;
-    public Text currentScoreText;
-    public Text easyHighScoreText, mediumHighScoreText, hardHighScoreText;
+    [SerializeField] private  Transform ballSpawnPoint;
+    [SerializeField] private GameObject basketballPrefab, pauseUI;
+    [SerializeField] private float shootingForceMultiplier = 0.1f;
+
+    [SerializeField] private float upwardForce = 5f;
+    private float gameTime, remainingTime;
+    private float previousTimeScale = 1f;
+
+    [SerializeField] private int trajectoryPoints = 20;
+    private int poolSize = 26;
+    private int easyHighScore, mediumHighScore, hardHighScore;
+    private int currentScore;
+    private int currentEasyScore = 0, currentMediumScore = 0, currentHardScore = 0;
+    private int SwipeAnimCount = 0;
+    private int maxSwipeAnimCount = 2;
+
+    [SerializeField] public Slider timeSlider;
+    [SerializeField] private Text timeText;
+    [SerializeField] private Text currentScoreText;
+    [SerializeField] private Text easyHighScoreText, mediumHighScoreText, hardHighScoreText;
 
     private Vector2 startSwipePosition, endSwipePosition;
+
     private bool isSwiping = false;
     [HideInInspector] public bool canPlay = false, isTraining = false;
-    [HideInInspector] public bool isGameOver = false; // Ensure this is declared outside the method    
-
+    [HideInInspector] public bool isGameOver = false;   
     // Pause funtionality
     private bool isPaused = false; // Flag to check if Game Over has already been handled
+    [SerializeField] private AudioSource swipeSound; // Reference to the AudioSource for the swipe sound
+    [SerializeField] private float maxSwipeForce = 100f; // Maximum expected swipe force for volume scaling
+
     
-    private float gameTime, remainingTime;
     private string currentDifficulty;
 
     private Queue<Rigidbody> basketballPool = new Queue<Rigidbody>();
-    private int poolSize = 26;
-
-    private int easyHighScore, mediumHighScore, hardHighScore;
-    private int currentScore;
-
-    private int currentEasyScore = 0, currentMediumScore = 0, currentHardScore = 0;
-
-    private float previousTimeScale = 1f;
 
     private TweenManager tweenManager;
 
-    public Camera uiCamera;        // Assign your UI Camera in the Inspector
-    public Camera gameCamera;      // Assign your Game Camera in the Inspector
-    public GameObject gameplayPanel;     // Gameplay UI Panel
+    [SerializeField] RectTransform swipeUpHandGesture; 
+
 
     private void Start()
     {
-      
         // Initialize object pool
         for (int i = 0; i < poolSize; i++)
         {
@@ -57,11 +61,12 @@ public class BasketBallScript : MonoBehaviour
 
         SetDifficulty("Easy");
 
-
         // Load high scores
         easyHighScore = PlayerPrefs.GetInt("EasyHighScore", 0);
         mediumHighScore = PlayerPrefs.GetInt("MediumHighScore", 0);
         hardHighScore = PlayerPrefs.GetInt("HardHighScore", 0);
+        SwipeAnimCount = PlayerPrefs.GetInt("SwipeAnimCount", 0); 
+
         UpdateHighScoreUI();
         tweenManager = GameObject.Find("Tween Manager").GetComponent<TweenManager>();
 
@@ -119,6 +124,9 @@ public class BasketBallScript : MonoBehaviour
                 float swipeForce = swipeDirection.magnitude * shootingForceMultiplier;
 
                 ShootBasketball(swipeDirection, swipeForce);
+
+                // Play the swipe sound
+                PlaySwipeSound(swipeForce);
             }
         }
         else if (remainingTime > 0)
@@ -138,9 +146,32 @@ public class BasketBallScript : MonoBehaviour
                 float swipeForce = swipeDirection.magnitude * shootingForceMultiplier;
 
                 ShootBasketball(swipeDirection, swipeForce);
+
+                // Play the swipe sound depending on the swipe force, the higher the swipe force,
+                // the higher the volume on the swipe Audio Source
+                PlaySwipeSound(swipeForce);
             }
         }
     }
+
+    private void PlaySwipeSound(float swipeForce)
+    {
+        if (swipeSound == null)
+        {
+            Debug.LogWarning("Swipe sound AudioSource is not assigned!");
+            return;
+        }
+
+        // Debug the swipe force
+        Debug.Log("Swipe Force :" + swipeForce);
+        float normalizedForce = Mathf.Clamp01(swipeForce / maxSwipeForce);
+
+        float volumeMultiplier = 4;
+
+        swipeSound.volume = normalizedForce * volumeMultiplier;
+        swipeSound.Play();
+    }
+
 
     private void ShootBasketball(Vector2 swipeDirection, float swipeForce)
     {
@@ -229,6 +260,8 @@ public class BasketBallScript : MonoBehaviour
             hardHighScore = currentHardScore;
             PlayerPrefs.SetInt("HardHighScore", hardHighScore);
         }
+        
+        PlayerPrefs.SetInt("SwipeAnimCount", SwipeAnimCount);
 
         PlayerPrefs.Save();
         UpdateHighScoreUI();
@@ -245,7 +278,6 @@ public class BasketBallScript : MonoBehaviour
         UpdateScoreUI();
     }
 
-
     private void UpdateHighScoreUI()
     {
         easyHighScoreText.text = easyHighScore.ToString();
@@ -258,7 +290,6 @@ public class BasketBallScript : MonoBehaviour
         if (isGameOver) return;
 
         isGameOver = true;
-        Debug.Log("GameOver triggered!");
 
         // Save high score
         SaveHighScore();
@@ -270,10 +301,6 @@ public class BasketBallScript : MonoBehaviour
         }
     }
 
-
-
-
-
     private IEnumerator ResetGameOverState()
     {
         // Add a short delay to ensure GameOver actions complete
@@ -283,34 +310,33 @@ public class BasketBallScript : MonoBehaviour
         isGameOver = false;
     }
 
-
-
     public void OnEasyButtonPressed()
     {
+        ShowHandAnim();
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Easy");
         ResetCurrentScore();
-       // StartGameplay();
     }
 
     public void OnMediumButtonPressed()
     {
+        ShowHandAnim();
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Medium");
         ResetCurrentScore();
-       // StartGameplay();
     }
 
     public void OnHardButtonPressed()
     {
+        ShowHandAnim();
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Hard");
         ResetCurrentScore();
-      //  StartGameplay();
     }
 
     public void OnTrainingButtonPressed()
     {
+        ShowHandAnim();
         isTraining = true;  // Enable Training Mode
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         ResetCurrentScore();
@@ -323,6 +349,47 @@ public class BasketBallScript : MonoBehaviour
                 timeSlider.gameObject.SetActive(false);  // Optionally hide the timer slider
             }
         }
+    }
+
+    public void ShowHandAnim()
+    { 
+        CanvasGroup myAnimCanvasGroup = swipeUpHandGesture.GetComponent<CanvasGroup>();
+        if(SwipeAnimCount < maxSwipeAnimCount)
+        {
+            // Code to simulate hand gesture animation
+            swipeUpHandGesture.anchoredPosition = new Vector2(200, 450); 
+            swipeUpHandGesture.DOAnchorPos(new Vector2(200, 140), 1f).SetLoops(-1, LoopType.Yoyo);
+            swipeUpHandGesture.gameObject.SetActive(true);
+            SwipeAnimCount++;
+            // Fade out with DOTween
+            myAnimCanvasGroup.alpha = 1;
+            StartCoroutine(disableSwipeAnim());  
+        } 
+        else
+        {
+            Debug.LogWarning("Will not play Anim");
+            Debug.Log("AnimCount "+ SwipeAnimCount);
+            return;
+        }                      
+    }
+
+     private void FadeOutHandGesture()
+    {
+        CanvasGroup myAnimCanvasGroup = swipeUpHandGesture.GetComponent<CanvasGroup>();
+        if (myAnimCanvasGroup != null)
+        {
+            // Fade out with DOTween
+            myAnimCanvasGroup.DOFade(0, 1f).OnComplete(()=>
+            {
+                swipeUpHandGesture.gameObject.SetActive(false);
+            });
+        }
+    }
+
+    public IEnumerator disableSwipeAnim()
+    {
+        yield return new WaitForSeconds(5f);
+        FadeOutHandGesture();
     }
 
     public void OnHighScoreButtonPressed() => SaveHighScore();
@@ -338,14 +405,12 @@ public class BasketBallScript : MonoBehaviour
             previousTimeScale = Time.timeScale;  // Save the current TimeScale which is one
             Time.timeScale = 0;   // Pause game
             pauseUI.SetActive(true); 
-            Debug.Log("Game Paused my Brr!");
         }
         else
         {
             Time.timeScale = previousTimeScale;   // Resume the game by setting timeScale badck to one
             pauseUI.SetActive(false);
             StartCoroutine(waitBrieflyBeforeEnablingSwipe());
-            Debug.Log("Game Resumed my Brr!");
         }
     }
 

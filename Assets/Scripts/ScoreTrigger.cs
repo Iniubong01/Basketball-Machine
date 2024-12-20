@@ -14,6 +14,14 @@ public class ScoreTrigger : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
 
+    [Space, SerializeField] private Transform mainCameraTransform;
+    [Space, SerializeField] private float shakeDuration = 0.5f;
+    private float shakeMagnitude = 0.01f;
+
+    Vector3 originalCameraPosition;
+
+    public ParticleSystem scoreEffect;
+
     private HashSet<GameObject> triggeredBalls = new HashSet<GameObject>();
 
     void Start()
@@ -29,6 +37,13 @@ public class ScoreTrigger : MonoBehaviour
         {
             Debug.LogError("AudioSource is not assigned to ScoreTrigger!");
         }
+
+        if (mainCameraTransform == null)
+        {
+            mainCameraTransform = Camera.main.transform;
+        }
+
+        originalCameraPosition = mainCameraTransform.position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,6 +55,10 @@ public class ScoreTrigger : MonoBehaviour
 
             basketballScript.AddScore(35); // Increment score by 35 points
             CreateScorePopUp();
+
+            scoreEffect.Play();
+
+            StartCoroutine(CameraShakeRoutine());
 
             PlaySound(netSound); // Play net collision sound
 
@@ -55,7 +74,6 @@ public class ScoreTrigger : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
-
 
         private void CreateScorePopUp()
     {
@@ -80,6 +98,22 @@ public class ScoreTrigger : MonoBehaviour
         {
             Debug.LogError("Score pop-up prefab is missing a RectTransform component!");
         }
+    }
+
+    private IEnumerator CameraShakeRoutine()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            Vector3 randomOffset = Random.insideUnitSphere * shakeMagnitude;
+            mainCameraTransform.position = originalCameraPosition + randomOffset;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCameraTransform.position = originalCameraPosition;
     }
 
 

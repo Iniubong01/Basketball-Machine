@@ -14,7 +14,7 @@ public class TweenManager : MonoBehaviour
 
     // Panel positions for transitions
     private readonly Vector2 onScreenPos = new Vector2(0, 0);
-    private readonly Vector2 offScreenPos = new Vector2(0, 2220);
+    private readonly Vector2 offScreenPos = new Vector2(0, 2300);
 
     // Start is called before the first frame update
     void Start()
@@ -106,8 +106,6 @@ public class TweenManager : MonoBehaviour
         basketballScript.isTraining = false;
 
         DestroyAllPopups(); // Clean up any lingering popups
-
-        Debug.Log("Returned to Main Menu.");
     }
 
     // Slide in settings UI
