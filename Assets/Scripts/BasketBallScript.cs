@@ -5,6 +5,8 @@ using System.Collections;
 
 public class BasketBallScript : MonoBehaviour
 {
+    [Space, SerializeField] EmissionColorEffect emissionColorEffect; // to control machine lights
+
     public Transform ballSpawnPoint;
     public GameObject basketballPrefab, pauseUI;
     public float shootingForceMultiplier = 0.1f;
@@ -174,6 +176,7 @@ public class BasketBallScript : MonoBehaviour
 
     private void UpdateScoreUI()
     {
+        
         switch (currentDifficulty)
         {
             case "Easy":
@@ -190,6 +193,9 @@ public class BasketBallScript : MonoBehaviour
 
     public void AddScore(int points)
     {
+       
+        emissionColorEffect.OnScoring(); // light blink after player scorees a basket
+
         switch (currentDifficulty)
         {
             case "Easy":
@@ -279,7 +285,7 @@ public class BasketBallScript : MonoBehaviour
 
 
 
-        public void OnEasyButtonPressed()
+    public void OnEasyButtonPressed()
     {
         StartCoroutine(waitBrieflyBeforeEnablingSwipe());
         SetDifficulty("Easy");

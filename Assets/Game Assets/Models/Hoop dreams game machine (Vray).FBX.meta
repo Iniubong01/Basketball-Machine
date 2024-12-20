@@ -3,7 +3,212 @@ guid: fa87c2e93e378904f89db4793b57b5c2
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Alum metal
+    second: {fileID: 2100000, guid: 20edb921e779f374ca46442e30515776, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Basket ball material
+    second: {fileID: 2100000, guid: 4d7b5e85dfdeee941b3199dee26d0c44, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black glos plastic
+    second: {fileID: 2100000, guid: 2f9ed303ead537341b086baa8b55bbaf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black mat plastic
+    second: {fileID: 2100000, guid: 94eff4f2328ef454591260da42694848, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black painted metal
+    second: {fileID: 2100000, guid: d6c9a073f59512447af3593427b7d240, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black plastic
+    second: {fileID: 2100000, guid: 4972e853403b5ec45a69b9bdf25482ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blocker texture matrial
+    second: {fileID: 2100000, guid: 2efe8334066921b4e944d7f9cff975a2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blue light
+    second: {fileID: 2100000, guid: 16f58bf376bad9247a33b9eaa5ce7da4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blue light coin panel
+    second: {fileID: 2100000, guid: 54d9698769d508f468e833b89e3f39e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blue light no saturate
+    second: {fileID: 2100000, guid: 8322b9cfefaf66c479ed8ddfc7ec490f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Blue plastic
+    second: {fileID: 2100000, guid: 5a1dce1c9a93a13479bd5a3643e83507, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chrome material
+    second: {fileID: 2100000, guid: 8c0052ab1e795c94ea37828b232ce4c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Coin material
+    second: {fileID: 2100000, guid: 77dc0a3568c8da24c97a12c5a011e189, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Control panel texture
+    second: {fileID: 2100000, guid: fdf64e8ed79739e4ebd66a594b297cd0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Corner texture
+    second: {fileID: 2100000, guid: dd98749ea252a9e45a229cb12de30bfd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark blue light
+    second: {fileID: 2100000, guid: 2fe646fa60033714d823552f470433d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark blue light no saturate
+    second: {fileID: 2100000, guid: a38cabd03edcfd043b169bad9d91fa32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face panel texture
+    second: {fileID: 2100000, guid: d0772d81d1d07e04295c0da46a46947e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Face texture
+    second: {fileID: 2100000, guid: 25e318fce81ef2f41ac366e3e26d9814, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gray glos plastic
+    second: {fileID: 2100000, guid: 0292a6f43e75cdf42819d1bc45f9b067, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green glos plastc
+    second: {fileID: 2100000, guid: b4bc114070fe7244bbb4be69f64dd62c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green light
+    second: {fileID: 2100000, guid: b5783b637deea704c9eefb8e398cd674, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Green light no saturate
+    second: {fileID: 2100000, guid: 30beffeea3bb7b04da7c543dbf466d66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Number material
+    second: {fileID: 2100000, guid: 596026ec0d538bd4a87ae206595b9760, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Oranje board dots
+    second: {fileID: 2100000, guid: 3e8abf10c0973bc4698bed62cedbe6df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red glos plastc
+    second: {fileID: 2100000, guid: 78bf266a774e48a4d804c1a5cae06cbb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red light
+    second: {fileID: 2100000, guid: 3c1776c0ab96d73478852dcc08ede3cc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red light counter
+    second: {fileID: 2100000, guid: 871e23ab7840cb541bd77040f64e523f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red light counter 2
+    second: {fileID: 2100000, guid: e7dc8c601e8b5bc40a28f6f6be659409, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Red light no saturate
+    second: {fileID: 2100000, guid: 9f37632fa1870d046bb4ccbc886a5c2d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Side texture material
+    second: {fileID: 2100000, guid: fed19c5f7b4cbb94a9f55780a35d18fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steel Metal material
+    second: {fileID: 2100000, guid: 8d5f0cc4dc4ef6345944b844322285e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Transparent plastic
+    second: {fileID: 2100000, guid: 31312d38ac1557249b60cb67ae485d9b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Transparent plastic gloss
+    second: {fileID: 2100000, guid: 0974a5e3d6fb94e4896b90d6582a985e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Violet light
+    second: {fileID: 2100000, guid: 9136acef5f32cb64d94322150013c5f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White glos plastic
+    second: {fileID: 2100000, guid: bfb34f89c7a37e146949d3d5c231bb5d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White plastic
+    second: {fileID: 2100000, guid: bba301c71bd4a0440a647854435c0923, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White transparet plastic
+    second: {fileID: 2100000, guid: e2406d63a2ba66746ae16c2b28223629, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yellow board
+    second: {fileID: 2100000, guid: 60c2654cd760d674982677d7153dae8a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yellow light
+    second: {fileID: 2100000, guid: 1eeab811e0706114ea88feab6e0e1e6a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Yellow light no saturate
+    second: {fileID: 2100000, guid: b2d132da7d88ae14dbfb903f0ee9453d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
