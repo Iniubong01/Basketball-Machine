@@ -3,12 +3,14 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public class BasketBallScript : MonoBehaviour
-{
+{   
+    [Space, SerializeField] Cloth basketballNet; 
     [Space, SerializeField] EmissionColorEffect emissionColorEffect; // to control machine lights
 
-    [SerializeField] private  Transform ballSpawnPoint;
+    [Space, SerializeField] private  Transform ballSpawnPoint;
     [SerializeField] private GameObject basketballPrefab, pauseUI;
     [SerializeField] private float shootingForceMultiplier = 0.1f;
 
@@ -59,6 +61,8 @@ public class BasketBallScript : MonoBehaviour
             basketballPool.Enqueue(basketball.GetComponent<Rigidbody>());
         }
 
+        FeedBallCollidersToCloth();
+
         SetDifficulty("Easy");
 
         // Load high scores
@@ -73,6 +77,31 @@ public class BasketBallScript : MonoBehaviour
         UpdateScoreUI();
     }
 
+    void FeedBallCollidersToCloth()
+    {
+
+        List<SphereCollider> ballColliders = new List<SphereCollider>();
+        List<ClothSphereColliderPair> clothSphereColliders = new List<ClothSphereColliderPair>();
+
+        foreach (Rigidbody ballRigidbody in basketballPool)
+        {
+            SphereCollider collider = ballRigidbody.GetComponent<SphereCollider>();
+
+            ballColliders.Add(collider);
+        }
+
+        foreach (var ballCollider in ballColliders)
+        {
+            ClothSphereColliderPair colliderPair = new ClothSphereColliderPair();
+            colliderPair.first = ballCollider;
+            colliderPair.second = ballCollider;
+
+            clothSphereColliders.Add(colliderPair);
+        }
+        
+        // feed the colliders to the Cloth component
+        basketballNet.sphereColliders = clothSphereColliders.ToArray();
+    }
     
     private void Update()
     {
@@ -107,12 +136,14 @@ public class BasketBallScript : MonoBehaviour
         if (!canPlay)
             return;
 
-        if (isTraining)
+        if (remainingTime > 0 || isTraining)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 startSwipePosition = Input.mousePosition;
                 isSwiping = true;
+
+                PlaySwipeSound();
             }
 
             if (Input.GetMouseButtonUp(0) && isSwiping)
@@ -125,36 +156,12 @@ public class BasketBallScript : MonoBehaviour
 
                 ShootBasketball(swipeDirection, swipeForce);
 
-                // Play the swipe sound
-                PlaySwipeSound(swipeForce);
-            }
-        }
-        else if (remainingTime > 0)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                startSwipePosition = Input.mousePosition;
-                isSwiping = true;
-            }
 
-            if (Input.GetMouseButtonUp(0) && isSwiping)
-            {
-                endSwipePosition = Input.mousePosition;
-                isSwiping = false;
-
-                Vector2 swipeDirection = endSwipePosition - startSwipePosition;
-                float swipeForce = swipeDirection.magnitude * shootingForceMultiplier;
-
-                ShootBasketball(swipeDirection, swipeForce);
-
-                // Play the swipe sound depending on the swipe force, the higher the swipe force,
-                // the higher the volume on the swipe Audio Source
-                PlaySwipeSound(swipeForce);
             }
         }
     }
 
-    private void PlaySwipeSound(float swipeForce)
+    private void PlaySwipeSound(float swipeForce = 100f)
     {
         if (swipeSound == null)
         {
