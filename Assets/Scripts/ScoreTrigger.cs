@@ -9,14 +9,15 @@ public class ScoreTrigger : MonoBehaviour
     [SerializeField] private GameObject scorePopUpPrefab;
     [SerializeField] private Canvas uiCanvas;
 
-    [SerializeField] private AudioClip netSound; // Ball to net collision sound
+    [Space, SerializeField] private AudioClip netSound; // Ball to net collision sound
     [SerializeField] private AudioClip bounceSound; // Ball bounce sound
+    [SerializeField] private AudioClip scoreSound; // Ball bounce sound
 
     [SerializeField] private AudioSource audioSource;
 
     [Space, SerializeField] private Transform mainCameraTransform;
     [Space, SerializeField] private float shakeDuration = 0.5f;
-    private float shakeMagnitude = 0.01f;
+    [Space, SerializeField] private float shakeMagnitude = 0.01f;
 
     Vector3 originalCameraPosition;
 
@@ -57,6 +58,8 @@ public class ScoreTrigger : MonoBehaviour
             CreateScorePopUp();
 
             scoreEffect.Play();
+            
+            PlaySound(scoreSound);
 
             StartCoroutine(CameraShakeRoutine());
 
