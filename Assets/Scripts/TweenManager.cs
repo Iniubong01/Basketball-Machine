@@ -96,6 +96,10 @@ public class TweenManager : MonoBehaviour
     // Transition from gameplay UI back to main menu
     public void GamePlayOutMenuIn()
     {
+        Time.timeScale = 1; //to resume
+        basketballScript.HideHandAnim();
+        basketballScript.ResetCurrentScore();
+
         basketballScript.canPlay = false;
         ToggleBackground(true);
 

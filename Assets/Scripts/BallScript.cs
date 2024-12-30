@@ -25,19 +25,19 @@ public class BallScript : MonoBehaviour
         audioSource.spatialBlend = 1f;  // Makes the sound to 3D, to make it more realistic
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!AudioManager.Instance.IsSFXMuted() && bounceSound != null && !collision.gameObject.CompareTag("Net") && bounceSound != null)
-        {
-            // Calculate collision impulse
-            float impulse = collision.relativeVelocity.magnitude * collision.rigidbody?.mass ?? 1f;
+    // private void OnCollisionEnter(Collision collision)
+    // {
+    //     if (!AudioManager.Instance.IsSFXMuted() && bounceSound != null && !collision.gameObject.CompareTag("Net") && bounceSound != null)
+    //     {
+    //         // Calculate collision impulse
+    //         float impulse = collision.relativeVelocity.magnitude * collision.rigidbody?.mass ?? 1f;
 
-            // Map impulse to a volume range
-            float volume = Mathf.Clamp(impulse * volumeScaleFactor, minVolume, maxVolume);
+    //         // Map impulse to a volume range
+    //         float volume = Mathf.Clamp(impulse * volumeScaleFactor, minVolume, maxVolume);
 
-            // Play the bounce sound with calculated volume
-            audioSource.PlayOneShot(bounceSound, volume);
-        }
-    }
+    //         // Play the bounce sound with calculated volume
+    //         audioSource.PlayOneShot(bounceSound, volume);
+    //     }
+    // }
 }
 

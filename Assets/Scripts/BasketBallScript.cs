@@ -283,6 +283,7 @@ public class BasketBallScript : MonoBehaviour
         isGameOver = false;
 
         UpdateScoreUI();
+        pauseUI.SetActive(false);
     }
 
     private void UpdateHighScoreUI()
@@ -360,10 +361,11 @@ public class BasketBallScript : MonoBehaviour
 
     public void ShowHandAnim()
     { 
+        
         CanvasGroup myAnimCanvasGroup = swipeUpHandGesture.GetComponent<CanvasGroup>();
         if(SwipeAnimCount < maxSwipeAnimCount)
         {
-            // Code to simulate hand gesture animation
+            swipeUpHandGesture.DOKill();
             swipeUpHandGesture.anchoredPosition = new Vector2(200, 450); 
             swipeUpHandGesture.DOAnchorPos(new Vector2(200, 140), 1f).SetLoops(-1, LoopType.Yoyo);
             swipeUpHandGesture.gameObject.SetActive(true);
@@ -380,7 +382,21 @@ public class BasketBallScript : MonoBehaviour
         }                      
     }
 
-     private void FadeOutHandGesture()
+    public void HideHandAnim(){
+        
+        swipeUpHandGesture.DOKill();
+
+        StopAllCoroutines();
+        SwipeAnimCount = 0;
+
+        CanvasGroup myAnimCanvasGroup = swipeUpHandGesture.GetComponent<CanvasGroup>();
+        myAnimCanvasGroup.alpha = 0;
+
+        swipeUpHandGesture.gameObject.SetActive(false);
+    }
+
+    
+    private void FadeOutHandGesture()
     {
         CanvasGroup myAnimCanvasGroup = swipeUpHandGesture.GetComponent<CanvasGroup>();
         if (myAnimCanvasGroup != null)

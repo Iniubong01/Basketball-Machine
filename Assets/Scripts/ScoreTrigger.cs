@@ -8,6 +8,7 @@ public class ScoreTrigger : MonoBehaviour
 
     [SerializeField] private GameObject scorePopUpPrefab;
     [SerializeField] private Canvas uiCanvas;
+    [SerializeField] private RectTransform scorePanel;
 
     [Space, SerializeField] private AudioClip netSound; // Ball to net collision sound
     [SerializeField] private AudioClip bounceSound; // Ball bounce sound
@@ -16,10 +17,11 @@ public class ScoreTrigger : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
 
     [Space, SerializeField] private Transform mainCameraTransform;
-    [Space, SerializeField] private float shakeDuration = 0.5f;
-    [Space, SerializeField] private float shakeMagnitude = 0.01f;
+    [Space, SerializeField] private float shakeDuration = 0.45f;
+    [Space, SerializeField] private float shakeMagnitude = 0.008f;
 
     Vector3 originalCameraPosition;
+    Vector2 randomRange = new Vector2(600, 300); 
 
     public ParticleSystem scoreEffect;
 
@@ -78,29 +80,24 @@ public class ScoreTrigger : MonoBehaviour
         }
     }
 
-        private void CreateScorePopUp()
+    private void CreateScorePopUp()
     {
-        // Generate random screen position
-        float randomX = Random.Range(Screen.width * 0.3f, Screen.width * 0.7f);
-        float randomY = Random.Range(Screen.height * 0.1f, Screen.height * 0.3f);
-        Vector3 randomScreenPosition = new Vector3(randomX, randomY, 0f);
 
-        // Convert screen position to world position in the canvas
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(
-            randomScreenPosition.x,
-            randomScreenPosition.y,
-            uiCanvas.planeDistance // Ensure the correct distance from the camera
-        ));
+        GameObject scorePopUpInstance = Instantiate(scorePopUpPrefab, scorePanel);
+        
+        RectTransform rectTransform = scorePopUpInstance.GetComponent<RectTransform>();
 
-        // Instantiate the pop-up prefab and set its position
-        GameObject scorePopUpInstance = Instantiate(scorePopUpPrefab, uiCanvas.transform);
-        scorePopUpInstance.transform.position = worldPosition;
+        Vector2 randomPosition = GetRandomPositionNearCenter();
+        rectTransform.anchoredPosition = randomPosition;
+    }
 
-        RectTransform popUpRect = scorePopUpInstance.GetComponent<RectTransform>();
-        if (popUpRect == null)
-        {
-            Debug.LogError("Score pop-up prefab is missing a RectTransform component!");
-        }
+    private Vector2 GetRandomPositionNearCenter()
+    {
+        
+        float randomX = Random.Range(0, randomRange.x);
+        float randomY = Random.Range(0, randomRange.y);
+
+        return new Vector2(randomX, randomY);
     }
 
     private IEnumerator CameraShakeRoutine()
